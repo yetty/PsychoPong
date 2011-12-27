@@ -84,7 +84,7 @@ var CrazyPong = {
 				}
 			};
 
-			this._ballMove = function () {
+			this._ballMove = function () {
 				a = CrazyPong.model.playerA;
 				b = CrazyPong.model.playerB;
 
@@ -98,7 +98,7 @@ var CrazyPong = {
 				}
 
 				if (this.x <= 0 + a.width) {
-					if ((this.y >= a.y)&&(this.y <= (a.y+a.height))) {
+					if ((this.y >= a.y)&&(this.y <= (a.y+a.height))) {
 						rebound = a;
 					} else { goal = CrazyPong.model.appendGoal(b, a); }
 				}
@@ -252,7 +252,7 @@ var CrazyPong = {
 			//this.canvas.height = 900;
 
 			size = $(window).width();
-			if (size > $(window).height()) {
+			if (size > $(window).height()) {
 				size = $(window).height();
 			}
 			size -= 200;
@@ -330,7 +330,7 @@ var CrazyPong = {
 
 		end : function (winner) {
 			who = 'A';
-			if (winner == CrazyPong.model.playerB) {
+			if (winner == CrazyPong.model.playerB) {
 				who = 'B';
 			}
 

@@ -1,0 +1,93 @@
+
+.clear {
+	visibility: hidden;
+	clear: both;
+}
+
+body {
+	background: black;
+	overflow: hidden;
+	color: blue;
+	font-weight: bold;
+	font-size: 120%;
+	text-align: center;
+}
+
+*  {
+	font-family: Tahoma;
+}
+
+document {
+	overflow: hidden;
+}
+
+#about {
+	width: 500px;
+	text-align: left;
+	margin: auto;
+}
+
+#about table {
+	text-align: center;
+}
+
+.key {
+	border: 2px solid blue;
+	width: 60px;
+	height: 60px;
+
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	margin-right: 20px;
+}
+
+#playerb, #playera {
+	float: left;
+	width: 250px;
+}
+
+#game {
+	width: 800px;
+	height: 800px;
+	display: none;
+}
+
+.start {
+	float: right;
+	background: blue;
+	color: black;
+	padding: 10px;
+	cursor: pointer;
+}
+
+#score {
+	display: none;
+}
+
+#score .a {
+	float: left;
+}
+
+#score .b {
+	float: right;
+}
+
+#end {
+	width: 500px;
+	margin: auto;
+	display: none;
+}
+
+#footer {
+	width: 500px;
+	margin: auto;
+	border-top: 1px solid blue;
+	margin-top: 40px;
+}
+
+#footer * {
+	color: blue;
+	font-size: 80%;
+	text-decoration: none;
+}

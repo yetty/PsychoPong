@@ -1,0 +1,142 @@
+<!doctype HTML>
+
+<html>
+	<head>
+		<meta charset=utf-8>
+
+		<meta name="author" content="Juda Kaleta <juda.kaleta@gmail.com>">
+		<meta content="index, follow" name="robots">
+		<meta http-equiv="Content-Script-Type" content="text/javascript">
+
+		<title>CrazyPong</title>
+		<link href="default.css" rel="stylesheet" type="text/css" />
+		<script src="game.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+		<script type="text/javascript">
+		var _gaq = _gaq || [];
+		_gaq.push(['_setAccount', 'UA-27964659-1']);
+		_gaq.push(['_trackPageview']);
+		(function() {
+		var ga = document.createElement('script'); ga.type =
+		'text/javascript'; ga.async = true;
+		ga.src = ('https:' == document.location.protocol ?
+		'https://ssl' : 'http://www') +
+		'.google-analytics.com/ga.js';
+		var s = document.getElementsByTagName('script')[0];
+		s.parentNode.insertBefore(ga, s);
+		})();
+		</script>
+	</head>
+
+	<body>
+		<div id="about">
+			<h1>CrazyPong</h1>
+			<p>CrazyPong is a remake of an old DOS game. It is game for two
+			players. 10 goals is enought for win...</p>
+
+			<div id="playera">
+				<h2>Player A:</h2>
+
+				<table>
+					<tr>
+						<td>
+							<div class="key">
+								a
+							</div>
+						</td>
+						<td>
+							<div class="key">
+								s
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>up</td>
+						<td>down</td>
+					</tr>
+				</table>
+			</div>
+
+			<div id="playerb">
+				<h2>Player B:</h2>
+
+				<table>
+					<tr>
+						<td>
+							<div class="key">
+								k
+							</div>
+						</td>
+						<td>
+							<div class="key">
+								l
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>up</td>
+						<td>down</td>
+					</tr>
+				</table>
+			</div>
+
+			<hr class="clear">
+
+			<div class="start" id="start">
+				Start game!
+			</div>
+		</div>
+
+		<div id="score">
+			<h2 class="a">
+				Player A:
+				<span class="A">0</span>
+			</h2>
+
+			<h2 class="b">
+				Player B:
+				<span class="B">0</span>
+			</h2>
+		</div>
+
+
+		<div id="end">
+			<p>Player <span></span> won!</p>
+
+
+			<div class="start" id="reload">
+				Play again!
+			</div>
+		</div>
+		<hr class="clear">
+
+		<canvas id="game" width=300 height=300>
+			You need newer browser. Try last version of Chrome or Firefox.
+		</canvas>
+
+
+		<div id="footer">
+			<a href="http://blog.glor.cz">Juda Kaleta</a> - <a href="http://himio.glor.cz">HIMIO</a>
+		</div>
+
+		<script>
+
+		game = CrazyPong.init({
+			canvas : "game",
+		});
+
+		$("#start").click(function() {
+			$("#about").slideUp();
+			$("#score").show();
+			$("#game").show();
+			game.start();
+		});
+
+		$("#reload").click(function() {
+			location.reload();
+		});
+		</script>
+	</body>
+</html>
+

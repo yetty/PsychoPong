@@ -88,8 +88,6 @@ var PsychoPong = {
 		},
 
 		ball : {
-			x : 0,
-			y : 0,
 			size : 2,
 			speed : [0, 0],
 
@@ -101,42 +99,19 @@ var PsychoPong = {
 			move : function () {
 				a = PsychoPong.Model.playerA;
 				b = PsychoPong.Model.playerB;
-
 				rebound = false; goal = false;
 
-				if (this.x >= PsychoPong.Model.canvasSize[0] - b.width) {
-					if ((this.y >= b.y)&&(this.y <= (b.y+b.height))) {
-						rebound = b;
-					} else { goal = PsychoPong.Model.appendGoal(a, b); }
-				}
+				collision = this._collision(a, b);
 
-				if (this.x <= 0 + a.width) {
-					if ((this.y >= a.y)&&(this.y <= (a.y+a.height))) {
-						rebound = a;
-					} else { goal = PsychoPong.Model.appendGoal(b, a); }
-				}
-
-				if (rebound) {
-					this.speed[0] *= -1;
-					this.speed[1] += rebound.speed / PsychoPong.player_speed * 0.1;
-				}
-
-				if (goal) {
-						this.x = PsychoPong.Model.canvasSize[0] / 2;
-						this.y = PsychoPong.Model.canvasSize[1] / 2;
-
-						speed = 1;
-						if (goal == b) { speed = -1; }
-						this.speed = [speed, 0];
-
-						PsychoPong.View.speedRotate++;
-						PsychoPong.View.goal(goal);
+				if (collision[0]===true) {
+					this._rebound(collision[1]);
+				} else if (collision[0]===false) {
+					this._goal(collision[1]);
 				}
 
 				if ((this.y+this.size >= PsychoPong.Model.canvasSize[1])||(this.y-this.size<=0)) {
 					this.speed[1] *= -1;
 				}
-
 				if ((this.speed[0]<0&&this.x>0)||(this.speed[0]>0&&this.x+this.size<PsychoPong.Model.canvasSize[0])) {
 					this.x += this.speed[0];
 				}
@@ -144,6 +119,43 @@ var PsychoPong = {
 				if ((this.speed[1]<0&&this.y>0)||(this.speed[1]>0&&this.y+this.size<PsychoPong.Model.canvasSize[1])) {
 					this.y += this.speed[1];
 				}
+
+			},
+
+			_collision : function (a, b) {
+				if (this.x >= PsychoPong.Model.canvasSize[0] - b.width) {
+					if ((this.y >= b.y)&&(this.y <= (b.y+b.height))) {
+						return [true, b];
+					} else {
+						return [false, PsychoPong.Model.appendGoal(a, b)];
+					}
+				}
+				if (this.x <= 0 + a.width) {
+					if ((this.y >= a.y)&&(this.y <= (a.y+a.height))) {
+						return [true, a];
+					} else {
+						return [false, PsychoPong.Model.appendGoal(b, a)];
+					}
+				}
+
+				return [undefined, undefined];
+			},
+
+			_rebound : function (x) {
+				this.speed[0] *= -1;
+				this.speed[1] += x.speed / PsychoPong.player_speed * 0.1;
+			},
+
+			_goal : function (x) {
+				this.x = PsychoPong.Model.canvasSize[0] / 2;
+				this.y = PsychoPong.Model.canvasSize[1] / 2;
+
+				speed = 1;
+				if (x == PsychoPong.Model.playerB) { speed = -1; }
+				this.speed = [speed, 0];
+
+				PsychoPong.View.speedRotate++;
+				PsychoPong.View.goal(goal);
 			},
 		},
 

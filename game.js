@@ -1,4 +1,3 @@
-
 var PsychoPong = {
 	/**
 	 * Object for the game PsychoPong
@@ -8,11 +7,9 @@ var PsychoPong = {
 	 * @license: GNU GPL3
 	 */
 
+	fps : 20,
 	player_speed : 2,
 
-	/**
-	 * Initialization of the game.
-	*/
 	init : function (params) {
 		if (typeof(params['canvas']) != 'string'||$("#"+params['canvas']).length == 0) {
 			throw "Init error: Canvas is not an object";
@@ -26,8 +23,11 @@ var PsychoPong = {
 	},
 
 	start : function () {
-		PsychoPong.Model.ball.speed = [1, 0];
 		PsychoPong.game = true;
+
+		// start move of the ball
+		PsychoPong.Model.ball.speed = [1, 0];
+
 
 		setTimeout(function frame() {
 			try {
@@ -46,9 +46,9 @@ var PsychoPong = {
 					PsychoPong.Viewer.render();
 				}
 			} finally {
-				setTimeout(frame, 50);
+				setTimeout(frame, 1000 / PsychoPong.fps);
 			}
-		}, 50);
+		}, 1000 / PsychoPong.fps);
 	},
 
 	end : function (winner) {

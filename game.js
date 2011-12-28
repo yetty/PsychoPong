@@ -70,29 +70,39 @@ var PsychoPong = {
 	Model : {
 		canvasSize : [100, 100],
 
-		Element : function () {
+		Player : function () {
+			this.speed = 0;
+			this.goals = 0;
+
+			this.height = 20;
+			this.width = 5;
+
 			this.x = 0;
-			this.y = 0;
-			this.height = 0;
-			this.width = 0;
-			this.speed = [0, 0];
+			this.y = (PsychoPong.Model.canvasSize[1]-this.height) / 2;
 
-			this._move = function () {
-				if ((this.speed[0]<0&&this.x>0)||(this.speed[0]>0&&this.x+this.width<PsychoPong.Model.canvasSize[0])) {
-					this.x += this.speed[0];
-				}
-
-				if ((this.speed[1]<0&&this.y>0)||(this.speed[1]>0&&this.y+this.height<PsychoPong.Model.canvasSize[1])) {
-					this.y += this.speed[1];
+			this.move = function () {
+				if ((this.speed<0&&this.y>0)||(this.speed>0&&this.y+this.height<PsychoPong.Model.canvasSize[1])) {
+					this.y += this.speed;
 				}
 			};
+		},
 
-			this._ballMove = function () {
+		ball : {
+			x : 0,
+			y : 0,
+			size : 2,
+			speed : [0, 0],
+
+			init : function () {
+				this.x = PsychoPong.Model.canvasSize[0] / 2;
+				this.y = PsychoPong.Model.canvasSize[1] / 2;
+			},
+
+			move : function () {
 				a = PsychoPong.Model.playerA;
 				b = PsychoPong.Model.playerB;
 
-				rebound = false;
-				goal = false;
+				rebound = false; goal = false;
 
 				if (this.x >= PsychoPong.Model.canvasSize[0] - b.width) {
 					if ((this.y >= b.y)&&(this.y <= (b.y+b.height))) {
@@ -106,12 +116,12 @@ var PsychoPong = {
 					} else { goal = PsychoPong.Model.appendGoal(b, a); }
 				}
 
-				if (rebound!==false) {
+				if (rebound) {
 					this.speed[0] *= -1;
-					this.speed[1] += rebound.speed[1] / PsychoPong.player_speed * 0.1;
+					this.speed[1] += rebound.speed / PsychoPong.player_speed * 0.1;
 				}
 
-				if (goal!==false) {
+				if (goal) {
 						this.x = PsychoPong.Model.canvasSize[0] / 2;
 						this.y = PsychoPong.Model.canvasSize[1] / 2;
 
@@ -123,41 +133,27 @@ var PsychoPong = {
 						PsychoPong.View.goal(goal);
 				}
 
-				if ((this.y+this.height >= PsychoPong.Model.canvasSize[1])||(this.y-this.height<=0)) {
+				if ((this.y+this.size >= PsychoPong.Model.canvasSize[1])||(this.y-this.size<=0)) {
 					this.speed[1] *= -1;
 				}
 
-				this._move();
+				if ((this.speed[0]<0&&this.x>0)||(this.speed[0]>0&&this.x+this.size<PsychoPong.Model.canvasSize[0])) {
+					this.x += this.speed[0];
+				}
 
-			};
-
-			this.move = this._move;
+				if ((this.speed[1]<0&&this.y>0)||(this.speed[1]>0&&this.y+this.size<PsychoPong.Model.canvasSize[1])) {
+					this.y += this.speed[1];
+				}
+			},
 		},
 
-		playerA : undefined,
-		playerB : undefined,
-		ball : undefined,
-
 		init : function () {
-			this.playerA = new this.Element();
-			this.playerA.goals = 0;
-			this.playerA.height = 20;
-			this.playerA.width = 5;
-			this.playerA.y = (this.canvasSize[1]-this.playerA.height) / 2;
+			this.playerA = new this.Player();
 
-			this.playerB = new this.Element();
-			this.playerB.goals = 0;
-			this.playerB.height = 20;
-			this.playerB.width = 5;
+			this.playerB = new this.Player();
 			this.playerB.x = this.canvasSize[0]-this.playerB.width;
-			this.playerB.y = (this.canvasSize[1]-this.playerB.height) / 2;
 
-			this.ball = new this.Element();
-			this.ball.move = this.ball._ballMove;
-			this.ball.y = this.canvasSize[1] / 2;
-			this.ball.x = this.canvasSize[0] / 2;
-			this.ball.width = 2;
-			this.ball.height = 2;
+			this.ball.init();
 
 			return this;
 		},
@@ -204,18 +200,18 @@ var PsychoPong = {
 				switch(e.which) {
 					// playerA
 					case 65: // a
-						PsychoPong.Model.playerA.speed = [0, -speed];
+						PsychoPong.Model.playerA.speed = -speed;
 						break;
 					case 83: // s
-						PsychoPong.Model.playerA.speed = [0, speed];
+						PsychoPong.Model.playerA.speed = speed;
 						break;
 
 					// playerB
 					case 75: // k
-						PsychoPong.Model.playerB.speed = [0, -speed];
+						PsychoPong.Model.playerB.speed = -speed;
 						break;
 					case 76: // l
-						PsychoPong.Model.playerB.speed = [0, speed];
+						PsychoPong.Model.playerB.speed = speed;
 						break;
 				}
 			});
@@ -224,18 +220,18 @@ var PsychoPong = {
 				switch(e.which) {
 					// playerA
 					case 65: // a
-						PsychoPong.Model.playerA.speed = [0, 0];
+						PsychoPong.Model.playerA.speed = 0;
 						break;
 					case 83: // s
-						PsychoPong.Model.playerA.speed = [0, 0];
+						PsychoPong.Model.playerA.speed = 0;
 						break;
 
 					// playerB
 					case 75: // k
-						PsychoPong.Model.playerB.speed = [0, 0];
+						PsychoPong.Model.playerB.speed = 0;
 						break;
 					case 76: // l
-						PsychoPong.Model.playerB.speed = [0, 0];
+						PsychoPong.Model.playerB.speed = 0;
 						break;
 				}
 			});
@@ -333,7 +329,7 @@ var PsychoPong = {
 
 		_renderBall : function(x, y, b) {
 			this.context.beginPath();
-			this.context.arc(x+b.x, y+b.y, b.width, 0, 2 * Math.PI, false);
+			this.context.arc(x+b.x, y+b.y, b.size, 0, 2 * Math.PI, false);
 			this.context.fill();
 		},
 

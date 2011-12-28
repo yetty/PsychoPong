@@ -1,7 +1,7 @@
 
-var CrazyPong = {
+var PsychoPong = {
 	/**
-	 * Object for the game CrazyPong
+	 * Object for the game PsychoPong
 	 *
 	 * @author: Juda Kaleta <juda.kaleta@gmail.com>
 	 * @version: 0.1 alpha
@@ -28,23 +28,23 @@ var CrazyPong = {
 	start : function () {
 		var parent = this;
 		var frames = 0;
-		CrazyPong.model.ball.speed = [1, 0];
-		CrazyPong.game = true;
+		PsychoPong.model.ball.speed = [1, 0];
+		PsychoPong.game = true;
 
 		setTimeout(function frame() {
 			try {
-				if ((parent.viewer.status !== false)&&(CrazyPong.game === true)) {
+				if ((parent.viewer.status !== false)&&(PsychoPong.game === true)) {
 					frames++;
 					if (frames%50 == 0) {
-						s = CrazyPong.model.ball.speed[0];
+						s = PsychoPong.model.ball.speed[0];
 						if (s > 0) {
-							CrazyPong.model.ball.speed[0] += 0.1;
+							PsychoPong.model.ball.speed[0] += 0.1;
 						} else {
-							CrazyPong.model.ball.speed[0] -= 0.1;
+							PsychoPong.model.ball.speed[0] -= 0.1;
 						}
 
 						if(frame%400 == 0) {
-							CrazyPong.model.ball.speed[1] += Math.round(Math.random());
+							PsychoPong.model.ball.speed[1] += Math.round(Math.random());
 							frames = 0;
 						}
 					}
@@ -60,8 +60,8 @@ var CrazyPong = {
 	},
 
 	end : function (winner) {
-		CrazyPong.game = false;
-		CrazyPong.viewer.end(winner);
+		PsychoPong.game = false;
+		PsychoPong.viewer.end(winner);
 	},
 
 	Model : {
@@ -75,52 +75,52 @@ var CrazyPong = {
 			this.speed = [0, 0];
 
 			this._move = function () {
-				if ((this.speed[0]<0&&this.x>0)||(this.speed[0]>0&&this.x+this.width<CrazyPong.model.canvasSize[0])) {
+				if ((this.speed[0]<0&&this.x>0)||(this.speed[0]>0&&this.x+this.width<PsychoPong.model.canvasSize[0])) {
 					this.x += this.speed[0];
 				}
 
-				if ((this.speed[1]<0&&this.y>0)||(this.speed[1]>0&&this.y+this.height<CrazyPong.model.canvasSize[1])) {
+				if ((this.speed[1]<0&&this.y>0)||(this.speed[1]>0&&this.y+this.height<PsychoPong.model.canvasSize[1])) {
 					this.y += this.speed[1];
 				}
 			};
 
 			this._ballMove = function () {
-				a = CrazyPong.model.playerA;
-				b = CrazyPong.model.playerB;
+				a = PsychoPong.model.playerA;
+				b = PsychoPong.model.playerB;
 
 				rebound = false;
 				goal = false;
 
-				if (this.x >= CrazyPong.model.canvasSize[0] - b.width) {
+				if (this.x >= PsychoPong.model.canvasSize[0] - b.width) {
 					if ((this.y >= b.y)&&(this.y <= (b.y+b.height))) {
 						rebound = b;
-					} else { goal = CrazyPong.model.appendGoal(a, b); }
+					} else { goal = PsychoPong.model.appendGoal(a, b); }
 				}
 
 				if (this.x <= 0 + a.width) {
 					if ((this.y >= a.y)&&(this.y <= (a.y+a.height))) {
 						rebound = a;
-					} else { goal = CrazyPong.model.appendGoal(b, a); }
+					} else { goal = PsychoPong.model.appendGoal(b, a); }
 				}
 
 				if (rebound!==false) {
 					this.speed[0] *= -1;
-					this.speed[1] += rebound.speed[1] / CrazyPong.player_speed;
+					this.speed[1] += rebound.speed[1] / PsychoPong.player_speed;
 				}
 
 				if (goal!==false) {
-						this.x = CrazyPong.model.canvasSize[0] / 2;
-						this.y = CrazyPong.model.canvasSize[1] / 2;
+						this.x = PsychoPong.model.canvasSize[0] / 2;
+						this.y = PsychoPong.model.canvasSize[1] / 2;
 
 						speed = 1;
 						if (goal == b) { speed = -1; }
 						this.speed = [speed, 0];
 
-						CrazyPong.viewer.speedRotate++;
-						CrazyPong.viewer.goal(goal);
+						PsychoPong.viewer.speedRotate++;
+						PsychoPong.viewer.goal(goal);
 				}
 
-				if ((this.y+this.height >= CrazyPong.model.canvasSize[1])||(this.y-this.height<=0)) {
+				if ((this.y+this.height >= PsychoPong.model.canvasSize[1])||(this.y-this.height<=0)) {
 					this.speed[1] *= -1;
 				}
 
@@ -170,7 +170,7 @@ var CrazyPong = {
 			given.goals++;
 
 			if (given.goals == 10) {
-				CrazyPong.end(given);
+				PsychoPong.end(given);
 			}
 
 			return goal;
@@ -180,25 +180,25 @@ var CrazyPong = {
 
 	Controller : {
 		init : function () {
-			var speed = CrazyPong.player_speed;
+			var speed = PsychoPong.player_speed;
 			var parent = this;
 
 			$(document).keydown(function (e) {
 				switch(e.which) {
 					// playerA
 					case 65: // a
-						CrazyPong.model.playerA.speed = [0, -speed];
+						PsychoPong.model.playerA.speed = [0, -speed];
 						break;
 					case 83: // s
-						CrazyPong.model.playerA.speed = [0, speed];
+						PsychoPong.model.playerA.speed = [0, speed];
 						break;
 
 					// playerB
 					case 75: // k
-						CrazyPong.model.playerB.speed = [0, -speed];
+						PsychoPong.model.playerB.speed = [0, -speed];
 						break;
 					case 76: // l
-						CrazyPong.model.playerB.speed = [0, speed];
+						PsychoPong.model.playerB.speed = [0, speed];
 						break;
 				}
 			});
@@ -207,18 +207,18 @@ var CrazyPong = {
 				switch(e.which) {
 					// playerA
 					case 65: // a
-						CrazyPong.model.playerA.speed = [0, 0];
+						PsychoPong.model.playerA.speed = [0, 0];
 						break;
 					case 83: // s
-						CrazyPong.model.playerA.speed = [0, 0];
+						PsychoPong.model.playerA.speed = [0, 0];
 						break;
 
 					// playerB
 					case 75: // k
-						CrazyPong.model.playerB.speed = [0, 0];
+						PsychoPong.model.playerB.speed = [0, 0];
 						break;
 					case 76: // l
-						CrazyPong.model.playerB.speed = [0, 0];
+						PsychoPong.model.playerB.speed = [0, 0];
 						break;
 				}
 			});
@@ -227,7 +227,7 @@ var CrazyPong = {
 		},
 
 		speedUpRotate : function() {
-			CrazyPong.viewer.speedRotate++;
+			PsychoPong.viewer.speedRotate++;
 		}
 
 	}, // END of Controller
@@ -247,7 +247,7 @@ var CrazyPong = {
 			this.context = orCanvas.getContext('2d');
 			this.context.fillStyle = '#00f';
 
-			this.size = CrazyPong.model.canvasSize;
+			this.size = PsychoPong.model.canvasSize;
 			//this.canvas.width = 900;
 			//this.canvas.height = 900;
 
@@ -291,9 +291,9 @@ var CrazyPong = {
 			this.context.fillRect(x-1, y, 2, this.size[1]); // left
 			this.context.fillRect(x+this.size[0]-1, y, 2, this.size[1]); // right
 
-			this._renderPlayer(x, y, CrazyPong.model.playerA);
-			this._renderPlayer(x, y, CrazyPong.model.playerB);
-			this._renderBall(x, y, CrazyPong.model.ball);
+			this._renderPlayer(x, y, PsychoPong.model.playerA);
+			this._renderPlayer(x, y, PsychoPong.model.playerB);
+			this._renderBall(x, y, PsychoPong.model.ball);
 		},
 
 		_rotation : function () {
@@ -321,16 +321,16 @@ var CrazyPong = {
 		},
 
 		goal : function (player) {
-			if (player == CrazyPong.model.playerA) {
-				$("#score .B").html(CrazyPong.model.playerB.goals);
+			if (player == PsychoPong.model.playerA) {
+				$("#score .B").html(PsychoPong.model.playerB.goals);
 			} else {
-				$("#score .A").html(CrazyPong.model.playerA.goals);
+				$("#score .A").html(PsychoPong.model.playerA.goals);
 			}
 		},
 
 		end : function (winner) {
 			who = 'A';
-			if (winner == CrazyPong.model.playerB) {
+			if (winner == PsychoPong.model.playerB) {
 				who = 'B';
 			}
 

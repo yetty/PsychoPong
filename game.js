@@ -1,15 +1,24 @@
+/**
+ *
+ * Object for the game PsychoPong
+ *
+ *
+ * @author: Juda Kaleta <juda.kaleta@gmail.com>
+ * @version: 0.1 alpha
+ * @license: GNU GPL3
+ *
+ */
 var PsychoPong = {
-	/**
-	 * Object for the game PsychoPong
-	 *
-	 * @author: Juda Kaleta <juda.kaleta@gmail.com>
-	 * @version: 0.1 alpha
-	 * @license: GNU GPL3
-	 */
-
+	// frames per second
 	fps : 20,
+
+	// speed of player's board
 	player_speed : 2,
 
+	/**
+	 * Initialization of PsychoPong. Prepare Model, Controller
+	 * and View.
+	 */
 	init : function (params) {
 		if (typeof(params['canvas']) != 'string'||$("#"+params['canvas']).length == 0) {
 			throw "Init error: Canvas is not an object";
@@ -17,44 +26,46 @@ var PsychoPong = {
 
 		PsychoPong.Model.init();
 		PsychoPong.Controller.init();
-		PsychoPong.Viewer.init(params['canvas']);
+		PsychoPong.View.init(params['canvas']);
 
 		return this;
 	},
 
+
+	/**
+	 * Run PsychoPong. Must be after initialization.
+	 */
 	start : function () {
 		PsychoPong.game = true;
 
 		// start move of the ball
 		PsychoPong.Model.ball.speed = [1, 0];
 
-
 		setTimeout(function frame() {
-			try {
-				if ((PsychoPong.Viewer.status !== false)&&(PsychoPong.game === true)) {
-					s = PsychoPong.Model.ball.speed[0];
+			// is the game still running?
+			if (PsychoPong.game) {
+				// waiting for finish of rendering
+				if (PsychoPong.View.status !== false) {
+					PsychoPong.Model.incSpeed();
 
-					PsychoPong.Model.ball.speed[1] += Math.round(Math.random())*0.01;
-					if (s > 0) {
-						PsychoPong.Model.ball.speed[0] += 0.01;
-					} else {
-						PsychoPong.Model.ball.speed[0] -= 0.01;
-					}
-
-					PsychoPong.Viewer.status = false;
+					PsychoPong.View.status = false;
 					PsychoPong.Model.moveAll();
-					PsychoPong.Viewer.render();
+					PsychoPong.View.render();
 				}
-			} finally {
+
 				setTimeout(frame, 1000 / PsychoPong.fps);
 			}
 		}, 1000 / PsychoPong.fps);
 	},
 
+	/**
+	 * End of the game.
+	 */
 	end : function (winner) {
 		PsychoPong.game = false;
-		PsychoPong.Viewer.end(winner);
+		PsychoPong.View.end(winner);
 	},
+
 
 	Model : {
 		canvasSize : [100, 100],
@@ -108,8 +119,8 @@ var PsychoPong = {
 						if (goal == b) { speed = -1; }
 						this.speed = [speed, 0];
 
-						PsychoPong.Viewer.speedRotate++;
-						PsychoPong.Viewer.goal(goal);
+						PsychoPong.View.speedRotate++;
+						PsychoPong.View.goal(goal);
 				}
 
 				if ((this.y+this.height >= PsychoPong.Model.canvasSize[1])||(this.y-this.height<=0)) {
@@ -166,6 +177,20 @@ var PsychoPong = {
 			}
 
 			return goal;
+		},
+
+		incSpeed : function () {
+			s = PsychoPong.Model.ball.speed;
+
+			// vertical speed
+			s[1] += Math.round(Math.random())*0.01;
+
+			// horizontal speed
+			if (s[0] > 0) {
+				s[0] += 1 / 200;
+			} else {
+				s[0] -= 1 / 200;
+			}
 		}
 
 	}, // END of Model
@@ -219,12 +244,12 @@ var PsychoPong = {
 		},
 
 		speedUpRotate : function() {
-			PsychoPong.Viewer.speedRotate++;
+			PsychoPong.View.speedRotate++;
 		}
 
 	}, // END of Controller
 
-	Viewer : {
+	View : {
 		canvas : undefined,
 		context : undefined,
 		status : true,
@@ -332,10 +357,6 @@ var PsychoPong = {
 			$("#score").fadeOut();
 			$("#end").show();
 		},
-
-
-
-	}, // END of Viewer
-
+	}, // END of View
 }
 

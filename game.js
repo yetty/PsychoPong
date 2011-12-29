@@ -250,11 +250,6 @@ var PsychoPong = {
 
 			return this;
 		},
-
-		speedUpRotate : function() {
-			PsychoPong.View.speedRotate++;
-		}
-
 	}, // END of Controller
 
 	View : {

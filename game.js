@@ -43,17 +43,15 @@ var PsychoPong = {
 
 		setTimeout(function frame() {
 			// is the game still running?
-			if (PsychoPong.game) {
-				// waiting for finish of rendering
-				if (PsychoPong.View.status !== false) {
+			if ((PsychoPong.game)&&(PsychoPong.View.status)) {
 					PsychoPong.Model.incSpeed();
 
 					PsychoPong.View.status = false;
 					PsychoPong.Model.moveAll();
 					PsychoPong.View.render();
-				}
 
-				setTimeout(frame, 1000 / PsychoPong.fps);
+					setTimeout(frame, 1000 / PsychoPong.fps);
+				}
 			}
 		}, 1000 / PsychoPong.fps);
 	},
@@ -154,7 +152,7 @@ var PsychoPong = {
 				if (x == PsychoPong.Model.playerB) { speed = -1; }
 				this.speed = [speed, 0];
 
-				PsychoPong.View.speedRotate++;
+				PsychoPong.View.speedRotation++;
 				PsychoPong.View.goal(goal);
 			},
 		},
@@ -166,8 +164,6 @@ var PsychoPong = {
 			this.playerB.x = this.canvasSize[0]-this.playerB.width;
 
 			this.ball.init();
-
-			return this;
 		},
 
 		moveAll : function () {
@@ -257,20 +253,21 @@ var PsychoPong = {
 		context : undefined,
 		status : true,
 
-		speedRotate : 0,
+		speedRotation : 0,
 		speed : 10,
-		iRotate : 0,
+		iRotation : 0,
 
 		init : function (canvas) {
 			this.canvas = $("#"+canvas);
 			orCanvas = document.getElementById(canvas);
 			this.context = orCanvas.getContext('2d');
+			this.size = PsychoPong.Model.canvasSize;
 			this.context.fillStyle = '#00f';
 
-			this.size = PsychoPong.Model.canvasSize;
-			//this.canvas.width = 900;
-			//this.canvas.height = 900;
+			this.setCanvasSize();
+		},
 
+		setCanvasSize : function () {
 			size = $(window).width();
 			if (size > $(window).height()) {
 				size = $(window).height();
@@ -279,10 +276,6 @@ var PsychoPong = {
 
 			this.canvas.css('width', size);
 			this.canvas.css('height', size);
-			//orCanvas.width = '800px';//$(window).width();
-			//orCanvas.height = '500px'; //$(window).height();
-
-			return this;
 		},
 
 		render : function () {
@@ -317,15 +310,12 @@ var PsychoPong = {
 		},
 
 		_rotation : function () {
-			if (this.speedRotate > 0) {
+			if (this.speedRotation > 0) {
 				this.canvas.css({
-    				'transform': 'rotate('+this.iRotate+'deg)',
-	    			'-moz-transform': 'rotate('+this.iRotate+'deg)',
-		    		'-o-transform': 'rotate('+this.iRotate+'deg)',
-				    '-webkit-transform': 'rotate('+this.iRotate+'deg)'
+
 				});
 
-				this.iRotate += ( this.speedRotate / 4 );
+				this.iRotation += ( this.speedRotation / 4 );
 			}
 		},
 

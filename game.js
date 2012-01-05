@@ -312,7 +312,10 @@ var PsychoPong = {
 		_rotation : function () {
 			if (this.speedRotation > 0) {
 				this.canvas.css({
-
+					'transform': 'rotate('+this.iRotate+'deg)',
+					'-moz-transform': 'rotate('+this.iRotate+'deg)',
+					'-o-transform': 'rotate('+this.iRotate+'deg)',
+					'-webkit-transform': 'rotate('+this.iRotate+'deg)'
 				});
 
 				this.iRotation += ( this.speedRotation / 4 );

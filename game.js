@@ -267,7 +267,7 @@ var PsychoPong = {
 			this.setCanvasSize();
 		},
 
-		setCanvasSize : function () {
+		setCanvasSize : function () {
 			size = $(window).width();
 			if (size > $(window).height()) {
 				size = $(window).height();

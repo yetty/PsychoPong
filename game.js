@@ -44,13 +44,13 @@ var PsychoPong = {
 		setTimeout(function frame() {
 			// is the game still running?
 			if ((PsychoPong.game)&&(PsychoPong.View.status)) {
-					PsychoPong.Model.incSpeed();
+				PsychoPong.Model.incSpeed();
 
-					PsychoPong.View.status = false;
-					PsychoPong.Model.moveAll();
-					PsychoPong.View.render();
+				PsychoPong.View.status = false;
+				PsychoPong.Model.moveAll();
+				PsychoPong.View.render();
 
-					setTimeout(frame, 1000 / PsychoPong.fps);
+				setTimeout(frame, 1000 / PsychoPong.fps);
 			}
 		}, 1000 / PsychoPong.fps);
 	},
@@ -266,7 +266,7 @@ var PsychoPong = {
 			this.setCanvasSize();
 		},
 
-		setCanvasSize : function () {
+		setCanvasSize : function () {
 			size = $(window).width();
 			if (size > $(window).height()) {
 				size = $(window).height();
@@ -311,10 +311,10 @@ var PsychoPong = {
 		_rotation : function () {
 			if (this.speedRotation > 0) {
 				this.canvas.css({
-					'transform': 'rotate('+this.iRotate+'deg)',
-					'-moz-transform': 'rotate('+this.iRotate+'deg)',
-					'-o-transform': 'rotate('+this.iRotate+'deg)',
-					'-webkit-transform': 'rotate('+this.iRotate+'deg)'
+					'transform': 'rotate('+this.iRotation+'deg)',
+					'-moz-transform': 'rotate('+this.iRotation+'deg)',
+					'-o-transform': 'rotate('+this.iRotation+'deg)',
+					'-webkit-transform': 'rotate('+this.iRotation+'deg)'
 				});
 
 				this.iRotation += ( this.speedRotation / 4 );

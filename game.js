@@ -51,7 +51,6 @@ var PsychoPong = {
 					PsychoPong.View.render();
 
 					setTimeout(frame, 1000 / PsychoPong.fps);
-				}
 			}
 		}, 1000 / PsychoPong.fps);
 	},
